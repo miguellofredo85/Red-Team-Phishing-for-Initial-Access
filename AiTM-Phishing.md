@@ -47,6 +47,10 @@ Este diagrama representa a movimentação de dados em tempo real. O Atacante (vo
   Dentro da consola interativa 
 - config domain lab.example.com
 - config ipv4 external <YOUR_VPS_IP>
+- phishlets hostname o365 login.lab.example.com
+- phishlets enable o365
+- lures create o365
+- lures get-url 0
 
 > Atencao! Aqui voce tem que ir para [DigitalOcean](https://github.com/miguellofredo85/Red-Team-TTP/blob/main/DigitalOcean.md) e configurar o ambiente cloud
 
@@ -292,3 +296,37 @@ Não altere a senha do usuário, não atualize seu perfil nem execute nenhuma a�
 `Nome de usuário: tony Senha: dafadfgadfgf353434!~#!@DDFG"{"{"!`
 - Seu **nome de usuário** e **senha** são capturados.
 - O Evilginx2 também pode capturar **tokens de sessão**, dependendo da configuração.
+
+## Lures
+As criações de lures no Evilginx são os links de phishing personalizados que você envia para as vítimas durante um engajamento . Eles são o principal vetor de entrega do ataque, funcionando como a "isca" que leva o alvo ao site falso.
+
+Pense no phishlet como o molde que diz ao Evilginx como imitar um site específico (ex: LinkedIn, Microsoft). O lure é a instância concreta desse molde, gerando um link único e permitindo que você ajuste inúmeros detalhes da campanha para cada alvo ou grupo
+
+Ao criar um lure com o comando lures create <nome_do_phishlet>, você recebe um ID numérico para gerenciá-lo. A partir daí, as principais opções de personalização são :
+
+Personalização da Aparência do Link: Você pode editar o nome do host (hostname) e o caminho (path) da URL para torná-la mais atraente. Por exemplo, pode transformar https://www.linkedin.seu-dominio-falso.com/PlXFBIrM em https://www.linkedin.seu-dominio-falso.com/downloads/Relatorio_Salarios.pdf .
+
+Controle de Acesso e Filtros: É possível definir um filtro de User-Agent com expressões regulares para aceitar apenas visitas de tipos específicos de dispositivos (ex: somente Mobile) e adicionar uma camada de proteção contra análise por bots de segurança .
+
+Páginas de Redirecionamento Intermediárias (Redirectors): Você pode configurar uma pequena página HTML (um redirector) que será mostrada antes do usuário ser enviado à página de login falsa. Essa página pode conter um botão ou redirecionar automaticamente, simulando, por exemplo, um aviso de "Clique aqui para ver seu documento" .
+
+Pré-visualização de Links (OpenGraph): Para enganar até mesmo os mais atentos, você pode configurar os metadados OpenGraph (título, descrição, imagem) que aparecem na pré-visualização do link quando compartilhado em redes sociais ou aplicativos de mensagem .
+
+Geração de Links Personalizados e Únicos: O Evilginx permite gerar links únicos para cada alvo, incorporando dados como nome e e-mail de forma criptografada diretamente na URL. Isso pode ser feito um a um ou em massa, importando uma lista de alvos em formato CSV ou JSON. Esta é uma tática crucial para evitar a detecção, pois cada link funciona apenas uma vez, frustrando scanners de segurança que tentam acessar o link repetidamente .
+
+Configuração de Comportamento Pós-captura: Após a vítima fazer login e o Evilginx capturar as credenciais e cookies de sessão, você pode definir para onde ela será redirecionada (redirect_url), como um documento legítimo no Google Drive, para não levantar suspeitas .
+
+Fluxo de um Ataque com Lures
+Configuração Inicial: O atacante configura um domínio malicioso (ex: seguranca-interna.com) e o associa ao servidor com Evilginx.
+
+Criação do Phishlet: Um phishlet para o alvo (ex: LinkedIn) é carregado e configurado .
+
+Criação do Lure: O atacante cria um lure baseado no phishlet do LinkedIn e o personaliza: define um caminho de URL como /rh/vagas, configura uma prévia atraente e ativa o filtro de User-Agent .
+
+Geração do Link: Um link único como https://linkedin.seguranca-interna.com/rh/vagas?token=XPTO é gerado e enviado para a vítima .
+
+Interação da Vítima: A vítima clica no link, vê a prévia atraente e a página de login idêntica à do LinkedIn. Ela insere suas credenciais e, se aplicável, o código de MFA.
+
+Captura de Dados: O Evilginx captura tudo (credenciais, cookies de sessão) em tempo real e, em seguida, redireciona a vítima para uma página inofensiva .
+
+Acesso Indevido: O atacante usa os cookies de sessão capturados para acessar a conta legítima da vítima no LinkedIn, sem precisar de senha ou MFA
