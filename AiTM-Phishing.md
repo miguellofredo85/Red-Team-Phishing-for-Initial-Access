@@ -44,9 +44,11 @@ Este diagrama representa a movimentação de dados em tempo real. O Atacante (vo
 - make
 - sudo ./build/evilginx -p ./phishlets -developer
 
+  Dentro da consola interativa 
+- config domain lab.example.com
+- config ipv4 external <YOUR_VPS_IP>
 
-
-
+> Atencao! Aqui voce tem que ir para [DigitalOcean](https://github.com/miguellofredo85/Red-Team-TTP/blob/main/DigitalOcean.md) e configurar o ambiente cloud
 
 
 
