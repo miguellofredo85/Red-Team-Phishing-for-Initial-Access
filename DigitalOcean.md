@@ -121,4 +121,5 @@ ssh root@<your_droplet_ip>
 
 > Até mesmo varreduras de porta (por exemplo, nmap) mostrarão a porta 22 como filtrada ou fechada.
 
+<img width="1622" height="933" alt="DO" src="https://github.com/user-attachments/assets/5f021413-ec18-4640-9335-e41ccd3f2877" />
 
