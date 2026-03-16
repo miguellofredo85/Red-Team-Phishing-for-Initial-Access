@@ -15,7 +15,7 @@ Este é um guia prático e passo a passo para proteger e gerenciar um domínio d
 
 - **Registradores de domínios** Existem muitos registradores de domínios disponíveis. O **Namecheap** é recomendado por seu preço acessível, facilidade de uso e acesso rápido às configurações de DNS, o que será fundamental mais adiante na configuração do phishing.
 - **Pesquisa e seleção de domínio**
-    - Digite o nome de domínio que você escolheu (por exemplo, `hacksmarter-manufacturing.cam`) para verificar a disponibilidade.
+    - Digite o nome de domínio que você escolheu (por exemplo, `localca.shop` ou qualquer um para prova) para verificar a disponibilidade.
     - Escolha um domínio que seja barato (normalmente US$ 1–US$ 3/ano) e convincente o suficiente para sua atividade de phishing.
 - **Processo de compra no Namecheap**O tutorial orienta o usuário por todo o fluxo de compra:
 1. 
@@ -30,6 +30,9 @@ Este é um guia prático e passo a passo para proteger e gerenciar um domínio d
     - Configuração do certificado SSL
     - Integração com o Google Workspace (G Suite)
     - Hospedagem da página de destino
+
+<img width="1839" height="859" alt="dominio" src="https://github.com/user-attachments/assets/980fa328-3bda-4e3b-9e66-58a0f9ef0efe" />
+
 
 ---
 
